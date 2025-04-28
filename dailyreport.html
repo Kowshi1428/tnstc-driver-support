@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report Upload</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0fff0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #006600;
+    }
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📤 Daily Report Upload<br>நாளாந்த அறிக்கை பதிவேற்றம்</h1>
+
+  <form>
+    <label for="name">Your Name / உங்கள் பெயர்:</label>
+    <input type="text" id="name" placeholder="Ex: Kumar">
+
+    <label for="busNo">Bus Number / பஸ் எண்:</label>
+    <input type="text" id="busNo" placeholder="Ex: TN 45 1234">
+
+    <label for="report">Report Details / அறிக்கை விவரம்:</label>
+    <textarea id="report" rows="5" placeholder="Accident, delay, passenger count, etc."></textarea>
+
+    <label for="file">Upload File (if any):</label>
+    <input type="file" id="file">
+
+    <button type="submit">Submit Report / அறிக்கை சமர்ப்பிக்கவும்</button>
+  </form>
+
+</body>
+</html>

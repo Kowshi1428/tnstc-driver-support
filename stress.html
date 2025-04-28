@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Bus Issue</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4fcf8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #28a745;
+      text-align: center;
+    }
+    h2 {
+      color: #666;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    form {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1e7e34;
+    }
+  .button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  .button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+</head>
+<body>
+  <h1>🛠️ Report Bus Issue</h1>
+  <h2>பஸ் கோளாறு புகார்</h2>
+
+  <form id="busIssueForm">
+    <label for="busNumber">Bus Number / பஸ் எண்:</label>
+    <input type="text" id="busNumber" name="busNumber" required>
+
+    <label for="issueType">Issue Type / கோளாறு வகை:</label>
+    <select id="issueType" name="issueType" required>
+      <option value="">-- Select --</option>
+      <option value="engine">Engine / இயந்திரம்</option>
+      <option value="ac">AC / குளிர்சாதன</option>
+      <option value="brake">Brakes / பிரேக்</option>
+      <option value="lights">Lights / விளக்குகள்</option>
+      <option value="others">Others / மற்றவை</option>
+    </select>
+
+    <label for="description">Describe the problem / விளக்கம்:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+
+    <button type="submit">📤 Submit Report / புகாரை சமர்ப்பிக்கவும்</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('busIssueForm');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      alert('🛠️ Your issue report has been submitted successfully!');
+      form.reset();
+    });
+  </script>
+</body>
+</html>
