@@ -70,12 +70,48 @@
     <button type="submit">🚨 Send Alert / உதவியை அனுப்பு</button>
   </form>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
   <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY_HERE",
+      authDomain: "tnstc-support-hk.firebaseapp.com",
+      projectId: "tnstc-support-hk",
+      storageBucket: "tnstc-support-hk.appspot.com",
+      messagingSenderId:303239375975,
+      appId: "1:303239375975:ios:e03d0c8a5ecc3fc5f3b8c2
+"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Form submission
     const form = document.getElementById('emergencyForm');
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', async function(event) {
       event.preventDefault();
-      alert('🚨 Emergency alert submitted! TNSTC team will respond shortly.');
-      form.reset();
+
+      const busNumber = document.getElementById('busNumber').value;
+      const incident = document.getElementById('incident').value;
+      const location = document.getElementById('location').value;
+
+      try {
+        await db.collection("emergency_reports").add({
+          busNumber: busNumber,
+          incident: incident,
+          location: location,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert('🚨 Emergency alert submitted! TNSTC team will respond shortly.');
+        form.reset();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        alert('❌ Something went wrong. Please try again.');
+      }
     });
   </script>
 </body>
