@@ -2,65 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-  <title>Report Upload</title>
+  <title>Daily Report Upload - TNSTC</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0fff0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #006600;
-    }
-    form {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    input, textarea {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      margin-top: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+    body { font-family: Arial; padding: 20px; background: #f0f8ff; }
+    h1 { color: #007BFF; }
+    form { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 15px; }
+    input, textarea, button { padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
+    button { background: #007BFF; color: white; cursor: pointer; border: none; }
+    button:hover { background: #0056b3; }
   </style>
 </head>
 <body>
 
-  <h1>📤 Daily Report Upload<br>நாளாந்த அறிக்கை பதிவேற்றம்</h1>
+<h1>🗓️ Daily Report Upload</h1>
 
-  <form>
-    <label for="name">Your Name / உங்கள் பெயர்:</label>
-    <input type="text" id="name" placeholder="Ex: Kumar">
+<form id="dailyReportForm">
+  <input type="text" id="driverName" placeholder="Driver Name" required>
+  <input type="text" id="busNumber" placeholder="Bus Number" required>
+  <textarea id="report" placeholder="Report Details" required></textarea>
+  <button type="submit">Submit Report</button>
+</form>
 
-    <label for="busNo">Bus Number / பஸ் எண்:</label>
-    <input type="text" id="busNo" placeholder="Ex: TN 45 1234">
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-    <label for="report">Report Details / அறிக்கை விவரம்:</label>
-    <textarea id="report" rows="5" placeholder="Accident, delay, passenger count, etc."></textarea>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
+    authDomain: "drivesafe-connect.firebaseapp.com",
+    projectId: "drivesafe-connect",
+    storageBucket: "drivesafe-connect.firebasestorage.app",
+    messagingSenderId: "549149372493",
+    appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+    measurementId: "G-GGFYN26XEH"
+  };
 
-    <label for="file">Upload File (if any):</label>
-    <input type="file" id="file">
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    <button type="submit">Submit Report / அறிக்கை சமர்ப்பிக்கவும்</button>
-  </form>
+  const form = document.getElementById('dailyReportForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      driverName: document.getElementById('driverName').value,
+      busNumber: document.getElementById('busNumber').value,
+      report: document.getElementById('report').value,
+      timestamp: new Date().toISOString()
+    };
+    try {
+      await addDoc(collection(db, "daily_reports"), data);
+      alert("✅ Report submitted successfully!");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to submit report.");
+    }
+  });
+</script>
 
 </body>
 </html>
+
