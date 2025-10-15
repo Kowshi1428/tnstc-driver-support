@@ -14,14 +14,8 @@
       flex-direction: column;
       align-items: center;
     }
-    h1 {
-      color: #c0392b;
-      margin-bottom: 10px;
-    }
-    h2 {
-      color: #555;
-      margin-bottom: 30px;
-    }
+    h1 { color: #c0392b; margin-bottom: 10px; }
+    h2 { color: #555; margin-bottom: 30px; }
     form {
       width: 100%;
       max-width: 400px;
@@ -30,11 +24,7 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
+    label { display: block; margin-bottom: 8px; font-weight: bold; }
     input, textarea, button {
       width: 100%;
       padding: 10px;
@@ -47,72 +37,72 @@
       background-color: #e74c3c;
       color: white;
       cursor: pointer;
+      border: none;
     }
-    button:hover {
-      background-color: #c0392b;
-    }
+    button:hover { background-color: #c0392b; }
   </style>
 </head>
 <body>
-  <h1>🆘 Emergency Help</h1>
-  <h2>அவசர உதவி</h2>
 
-  <form id="emergencyForm">
-    <label for="busNumber">Bus Number / பஸ் எண்:</label>
-    <input type="text" id="busNumber" name="busNumber" required>
+<h1>🆘 Emergency Help</h1>
+<h2>அவசர உதவி</h2>
 
-    <label for="incident">What happened? / என்ன நடந்தது?</label>
-    <textarea id="incident" name="incident" rows="4" required></textarea>
+<form id="emergencyForm">
+  <label for="busNumber">Bus Number / பஸ் எண்:</label>
+  <input type="text" id="busNumber" required>
 
-    <label for="location">Your Location (optional):</label>
-    <input type="text" id="location" name="location" placeholder="Share if known">
+  <label for="incident">What happened? / என்ன நடந்தது?</label>
+  <textarea id="incident" rows="4" required></textarea>
 
-    <button type="submit">🚨 Send Alert / உதவியை அனுப்பு</button>
-  </form>
+  <label for="location">Your Location (optional):</label>
+  <input type="text" id="location" placeholder="Share if known">
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <button type="submit">🚨 Send Alert / உதவியை அனுப்பு</button>
+</form>
 
-  <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY_HERE",
-      authDomain: "tnstc-support-hk.firebaseapp.com",
-      projectId: "tnstc-support-hk",
-      storageBucket: "tnstc-support-hk.appspot.com",
-      messagingSenderId:303239375975,
-      appId: "1:303239375975:ios:e03d0c8a5ecc3fc5f3b8c2
-"
-    };
+<script type="module">
+  // Import Firebase v10 modular SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4", // Use your API key
+    authDomain: "drivesafe-connect.firebaseapp.com",
+    projectId: "drivesafe-connect",
+    storageBucket: "drivesafe-connect.firebasestorage.app",
+    messagingSenderId: "549149372493",
+    appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+    measurementId: "G-GGFYN26XEH"
+  };
 
-    // Form submission
-    const form = document.getElementById('emergencyForm');
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-      const busNumber = document.getElementById('busNumber').value;
-      const incident = document.getElementById('incident').value;
-      const location = document.getElementById('location').value;
+  // Handle form submission
+  const form = document.getElementById('emergencyForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const busNumber = document.getElementById('busNumber').value;
+    const incident = document.getElementById('incident').value;
+    const location = document.getElementById('location').value;
 
-      try {
-        await db.collection("emergency_reports").add({
-          busNumber: busNumber,
-          incident: incident,
-          location: location,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert('🚨 Emergency alert submitted! TNSTC team will respond shortly.');
-        form.reset();
-      } catch (error) {
-        console.error("Error adding document: ", error);
-        alert('❌ Something went wrong. Please try again.');
-      }
-    });
-  </script>
+    try {
+      await addDoc(collection(db, "emergency_reports"), {
+        busNumber,
+        incident,
+        location,
+        timestamp: serverTimestamp()
+      });
+      alert("🚨 Emergency alert submitted! TNSTC team will respond shortly.");
+      form.reset();
+    } catch (err) {
+      console.error("Error:", err);
+      alert("❌ Something went wrong. Please try again.");
+    }
+  });
+</script>
+
 </body>
 </html>
