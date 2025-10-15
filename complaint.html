@@ -63,6 +63,40 @@
 
     <button type="submit">Submit Complaint / புகார் சமர்ப்பிக்கவும்</button>
   </form>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
+  authDomain: "drivesafe-connect.firebaseapp.com",
+  projectId: "drivesafe-connect",
+  storageBucket: "drivesafe-connect.firebasestorage.app",
+  messagingSenderId: "549149372493",
+  appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+  measurementId: "G-GGFYN26XEH"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Example: Send form data to Firestore
+const form = document.getElementById("breakdownForm");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  await addDoc(collection(db, "breakdown_reports"), {
+    driverName: form.driverName.value,
+    busNumber: form.busNumber.value,
+    issueType: form.issueType.value,
+    description: form.description.value,
+    timestamp: new Date().toISOString()
+  });
+  alert("✅ Report submitted!");
+  form.reset();
+});
+</script>
+
 
 </body>
 </html>
+
