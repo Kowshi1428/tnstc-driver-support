@@ -2,100 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-  <title>Complaint Box</title>
+  <title>Complaint Box - TNSTC</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff9f0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #cc3300;
-    }
-    form {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    input, textarea, select {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #cc3300;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      margin-top: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+    body { font-family: Arial; padding: 20px; background: #f0f8ff; }
+    h1 { color: #007BFF; }
+    form { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 15px; }
+    input, textarea, button { padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
+    button { background: #007BFF; color: white; cursor: pointer; border: none; }
+    button:hover { background: #0056b3; }
   </style>
 </head>
 <body>
 
-  <h1>📝 Complaint Box<br>புகார் பதிவு செய்யவும்</h1>
+<h1>📋 Complaint Box</h1>
 
-  <form>
-    <label for="name">Your Name / உங்கள் பெயர்:</label>
-    <input type="text" id="name" placeholder="Ex: Ramesh">
+<form id="complaintForm">
+  <input type="text" id="driverName" placeholder="Driver Name" required>
+  <input type="text" id="busNumber" placeholder="Bus Number" required>
+  <textarea id="complaint" placeholder="Complaint Details" required></textarea>
+  <button type="submit">Submit Complaint</button>
+</form>
 
-    <label for="issue">Issue Type / பிரச்சனை வகை:</label>
-    <select id="issue">
-      <option>Overwork / அதிக வேலை</option>
-      <option>Public Misbehavior / பொதுமக்கள் நடந்துகொள்ளல்</option>
-      <option>Management Issue / மேலாளர் பிரச்சனை</option>
-      <option>Others / வேறு</option>
-    </select>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-    <label for="message">Complaint Details / விவரம்:</label>
-    <textarea id="message" rows="5" placeholder="Explain your problem..."></textarea>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
+    authDomain: "drivesafe-connect.firebaseapp.com",
+    projectId: "drivesafe-connect",
+    storageBucket: "drivesafe-connect.firebasestorage.app",
+    messagingSenderId: "549149372493",
+    appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+    measurementId: "G-GGFYN26XEH"
+  };
 
-    <button type="submit">Submit Complaint / புகார் சமர்ப்பிக்கவும்</button>
-  </form>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
-  authDomain: "drivesafe-connect.firebaseapp.com",
-  projectId: "drivesafe-connect",
-  storageBucket: "drivesafe-connect.firebasestorage.app",
-  messagingSenderId: "549149372493",
-  appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
-  measurementId: "G-GGFYN26XEH"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Example: Send form data to Firestore
-const form = document.getElementById("breakdownForm");
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  await addDoc(collection(db, "breakdown_reports"), {
-    driverName: form.driverName.value,
-    busNumber: form.busNumber.value,
-    issueType: form.issueType.value,
-    description: form.description.value,
-    timestamp: new Date().toISOString()
+  const form = document.getElementById('complaintForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      driverName: document.getElementById('driverName').value,
+      busNumber: document.getElementById('busNumber').value,
+      complaint: document.getElementById('complaint').value,
+      timestamp: new Date().toISOString()
+    };
+    try {
+      await addDoc(collection(db, "complaints"), data);
+      alert("✅ Complaint submitted successfully!");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to submit complaint.");
+    }
   });
-  alert("✅ Report submitted!");
-  form.reset();
-});
 </script>
-
 
 </body>
 </html>
