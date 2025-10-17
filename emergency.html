@@ -3,106 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emergency Help</title>
+  <title>🆘 Emergency Help - TNSTC</title>
   <style>
+    /* ===== Base Styling ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #fefefe;
-      margin: 0;
-      padding: 20px;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-    }
-    h1 { color: #c0392b; margin-bottom: 10px; }
-    h2 { color: #555; margin-bottom: 30px; }
-    form {
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
+      background: linear-gradient(135deg, #ff4e50, #f9d423);
+      animation: gradientShift 10s ease-in-out infinite alternate;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    label { display: block; margin-bottom: 8px; font-weight: bold; }
-    input, textarea, button {
+
+    @keyframes gradientShift {
+      0% { background: linear-gradient(135deg, #ff4e50, #f9d423); }
+      50% { background: linear-gradient(135deg, #f7971e, #ffd200); }
+      100% { background: linear-gradient(135deg, #ff4e50, #f9d423); }
+    }
+
+    /* ===== Form Card ===== */
+    .form-container {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .form-container:hover { transform: scale(1.02); }
+
+    h1 {
+      text-align: center;
+      color: #c0392b;
+      margin-bottom: 10px;
+      font-size: 28px;
+      animation: fadeIn 1s ease;
+    }
+
+    h2 {
+      text-align: center;
+      color: #555;
+      font-weight: 500;
+      margin-bottom: 25px;
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+    label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 2px solid #e0e0e0;
       font-size: 16px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
     }
+
+    input:focus, textarea:focus {
+      border-color: #c0392b;
+      box-shadow: 0 0 10px rgba(192, 57, 43, 0.3);
+      outline: none;
+    }
+
     button {
-      background-color: #e74c3c;
-      color: white;
-      cursor: pointer;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
       border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-    button:hover { background-color: #c0392b; }
+
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+    }
+
+    /* ===== Success Popup ===== */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .popup.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h3 { color: #c0392b; margin-bottom: 10px; }
+    .popup p { color: #444; font-size: 15px; }
+
+    @media(max-width:600px){
+      .form-container { padding: 25px 20px; }
+      h1{ font-size: 24px; }
+      h2{ font-size: 16px; }
+    }
   </style>
 </head>
 <body>
 
-<h1>🆘 Emergency Help</h1>
-<h2>அவசர உதவி</h2>
+  <div class="form-container">
+    <h1>🆘 Emergency Help</h1>
+    <h2>அவசர உதவி</h2>
 
-<form id="emergencyForm">
-  <label for="busNumber">Bus Number / பஸ் எண்:</label>
-  <input type="text" id="busNumber" required>
+    <form id="emergencyForm">
+      <label for="busNumber">Bus Number / பஸ் எண்:</label>
+      <input type="text" id="busNumber" required placeholder="Ex: TN-57 N-1234">
 
-  <label for="incident">What happened? / என்ன நடந்தது?</label>
-  <textarea id="incident" rows="4" required></textarea>
+      <label for="incident">What happened? / என்ன நடந்தது?</label>
+      <textarea id="incident" rows="4" required placeholder="Describe the incident"></textarea>
 
-  <label for="location">Your Location (optional):</label>
-  <input type="text" id="location" placeholder="Share if known">
+      <label for="location">Your Location (optional):</label>
+      <input type="text" id="location" placeholder="Share if known">
 
-  <button type="submit">🚨 Send Alert / உதவியை அனுப்பு</button>
-</form>
+      <button type="submit">🚨 Send Alert / உதவியை அனுப்பு</button>
+    </form>
+  </div>
 
-<script type="module">
-  // Import Firebase v10 modular SDK
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+  <div id="popup" class="popup">
+    <h3>✅ Alert Sent!</h3>
+    <p>Emergency report submitted successfully. TNSTC team will respond shortly.</p>
+  </div>
 
-  // Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4", // Use your API key
-    authDomain: "drivesafe-connect.firebaseapp.com",
-    projectId: "drivesafe-connect",
-    storageBucket: "drivesafe-connect.firebasestorage.app",
-    messagingSenderId: "549149372493",
-    appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
-    measurementId: "G-GGFYN26XEH"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
+      authDomain: "drivesafe-connect.firebaseapp.com",
+      projectId: "drivesafe-connect",
+      storageBucket: "drivesafe-connect.firebasestorage.app",
+      messagingSenderId: "549149372493",
+      appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+      measurementId: "G-GGFYN26XEH"
+    };
 
-  // Handle form submission
-  const form = document.getElementById('emergencyForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const busNumber = document.getElementById('busNumber').value;
-    const incident = document.getElementById('incident').value;
-    const location = document.getElementById('location').value;
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    try {
-      await addDoc(collection(db, "emergency_reports"), {
-        busNumber,
-        incident,
-        location,
-        timestamp: serverTimestamp()
-      });
-      alert("🚨 Emergency alert submitted! TNSTC team will respond shortly.");
-      form.reset();
-    } catch (err) {
-      console.error("Error:", err);
-      alert("❌ Something went wrong. Please try again.");
-    }
-  });
-</script>
+    const form = document.getElementById('emergencyForm');
+    const popup = document.getElementById('popup');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const busNumber = document.getElementById('busNumber').value;
+      const incident = document.getElementById('incident').value;
+      const location = document.getElementById('location').value;
+
+      try {
+        await addDoc(collection(db, "emergency_reports"), {
+          busNumber,
+          incident,
+          location,
+          timestamp: serverTimestamp()
+        });
+        popup.classList.add('active');
+        setTimeout(() => {
+          popup.classList.remove('active');
+          form.reset();
+        }, 2500);
+      } catch (err) {
+        console.error("Error:", err);
+        alert("❌ Something went wrong. Please try again.");
+      }
+    });
+  </script>
 
 </body>
 </html>
