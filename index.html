@@ -90,7 +90,6 @@
   <button class="button" onclick="location.href='emergency.html'">📞 Emergency Help <br> அவசர உதவி</button>
   <button class="button" onclick="location.href='complaint.html'">📋 Complaint Box <br> புகார் பெட்டி</button>
   <button class="button" onclick="location.href='rights.html'">📚 Know Your Rights <br> உங்கள் உரிமைகள்</button>
-  <button class="button" onclick="location.href='dailyreport.html'">🗓️ Daily Report Upload <br> அறிக்கையை பதிவேற்று</button>
 </div>
 
 <footer>
@@ -102,7 +101,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-  // 🔑 Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
     authDomain: "drivesafe-connect.firebaseapp.com",
@@ -116,7 +114,6 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Generic function to save form data to Firestore
   async function saveReport(collectionName, data) {
     try {
       await addDoc(collection(db, collectionName), data);
@@ -126,29 +123,10 @@
       alert("❌ Failed to submit report.");
     }
   }
-
-  // Example: You can call saveReport() in your form submit handlers on each page
-  // Example for complaint.html or dailyreport.html:
-  /*
-  const form = document.getElementById('dailyReportForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = {
-      busNumber: form.busNumber.value,
-      driverName: form.driverName.value,
-      report: form.report.value,
-      timestamp: new Date().toISOString()
-    };
-    await saveReport("daily_reports", data);
-    form.reset();
-  });
-  */
 </script>
 
 <script>
-  // Hide loader when page loads
   window.onload = function () { document.getElementById('loader').style.display = 'none'; };
-  // Toggle dark mode
   function toggleTheme() { document.body.classList.toggle('dark-mode'); }
 </script>
 
