@@ -1,108 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>🚍 Report Bus Issue - TNSTC</title>
 
-  <title>Report Bus Issue</title>
   <style>
+    /* ===== Base Styling ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4fcf8;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 20px;
+      animation: gradientShift 8s ease-in-out infinite alternate;
     }
+
+    @keyframes gradientShift {
+      0% { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+      100% { background: linear-gradient(135deg, #00b09b, #96c93d); }
+    }
+
+    /* ===== Card Container ===== */
+    .form-container {
+      width: 95%;
+      max-width: 450px;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .form-container:hover {
+      transform: scale(1.02);
+    }
+
     h1 {
-      color: #28a745;
       text-align: center;
+      color: #007bff;
+      font-size: 26px;
+      margin-bottom: 10px;
+      animation: fadeInDown 1s ease;
     }
+
     h2 {
-      color: #666;
       text-align: center;
-      margin-bottom: 30px;
+      color: #444;
+      font-weight: 500;
+      margin-bottom: 25px;
+      animation: fadeInDown 1.2s ease;
     }
-    form {
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
+
+    /* ===== Input Fields ===== */
     label {
-      font-weight: bold;
-      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
       display: block;
     }
-    input, select, textarea, button {
+
+    input, select, textarea {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    /* ===== Submit Button ===== */
     button {
-      background-color: #28a745;
+      background: linear-gradient(135deg, #28a745, #218838);
       color: white;
+      font-size: 16px;
       border: none;
+      padding: 12px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
     }
+
     button:hover {
-      background-color: #1e7e34;
+      background: linear-gradient(135deg, #218838, #1e7e34);
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
-  .button {
-    display: inline-block;
-    background-color: #007bff;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 10px 10px;
-    transition: background-color 0.3s ease;
-  }
 
-  .button:hover {
-    background-color: #0056b3;
-  }
-</style>
+    /* ===== Success Message Animation ===== */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
 
+    .popup.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h3 {
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+
+    .popup p {
+      color: #444;
+      font-size: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .form-container { padding: 25px 20px; }
+      h1 { font-size: 22px; }
+      h2 { font-size: 16px; }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>🛠️ Report Bus Issue</h1>
-  <h2>பஸ் கோளாறு புகார்</h2>
+  <div class="form-container">
+    <h1>🛠️ Report Bus Issue</h1>
+    <h2>பஸ் கோளாறு புகார்</h2>
 
-  <form id="busIssueForm">
-    <label for="busNumber">Bus Number / பஸ் எண்:</label>
-    <input type="text" id="busNumber" name="busNumber" required>
+    <form id="busIssueForm">
+      <label for="busNumber">Bus Number / பஸ் எண்:</label>
+      <input type="text" id="busNumber" name="busNumber" placeholder="Ex: TN-57 N-1234" required>
 
-    <label for="issueType">Issue Type / கோளாறு வகை:</label>
-    <select id="issueType" name="issueType" required>
-      <option value="">-- Select --</option>
-      <option value="engine">Engine / இயந்திரம்</option>
-      <option value="ac">AC / குளிர்சாதன</option>
-      <option value="brake">Brakes / பிரேக்</option>
-      <option value="lights">Lights / விளக்குகள்</option>
-      <option value="others">Others / மற்றவை</option>
-    </select>
+      <label for="issueType">Issue Type / கோளாறு வகை:</label>
+      <select id="issueType" name="issueType" required>
+        <option value="">-- Select --</option>
+        <option value="engine">Engine / இயந்திரம்</option>
+        <option value="ac">AC / குளிர்சாதன</option>
+        <option value="brake">Brakes / பிரேக்</option>
+        <option value="lights">Lights / விளக்குகள்</option>
+        <option value="others">Others / மற்றவை</option>
+      </select>
 
-    <label for="description">Describe the problem / விளக்கம்:</label>
-    <textarea id="description" name="description" rows="4" required></textarea>
+      <label for="description">Describe the problem / விளக்கம்:</label>
+      <textarea id="description" name="description" rows="4" placeholder="Explain the issue clearly..." required></textarea>
 
-    <button type="submit">📤 Submit Report / புகாரை சமர்ப்பிக்கவும்</button>
-  </form>
+      <button type="submit">📤 Submit Report / புகாரை சமர்ப்பிக்கவும்</button>
+    </form>
+  </div>
+
+  <div id="popup" class="popup">
+    <h3>✅ Report Submitted!</h3>
+    <p>Your bus issue has been successfully recorded.</p>
+  </div>
 
   <script>
     const form = document.getElementById('busIssueForm');
+    const popup = document.getElementById('popup');
+
     form.addEventListener('submit', function(event) {
       event.preventDefault();
-      alert('🛠️ Your issue report has been submitted successfully!');
-      form.reset();
+      popup.classList.add('active');
+      setTimeout(() => {
+        popup.classList.remove('active');
+        form.reset();
+      }, 2500);
     });
   </script>
 </body>
