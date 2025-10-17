@@ -4,59 +4,234 @@
   <meta charset="UTF-8">
   <title>Daily Report Upload - TNSTC</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: 
-#f0f8ff; }
-    h1 { color: 
-#007BFF; }
-    form { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 15px; }
-    input, textarea, button { padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
-    button { background: 
-#007BFF; color: white; cursor: pointer; border: none; }
-    button:hover { background: 
-#0056b3; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Floating background orbs */
+    .orb {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      filter: blur(60px);
+      animation: float 6s infinite ease-in-out alternate;
+    }
+
+    .orb:nth-child(1) {
+      top: 10%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .orb:nth-child(2) {
+      bottom: 15%;
+      right: 25%;
+      animation-delay: 1s;
+    }
+
+    .orb:nth-child(3) {
+      top: 50%;
+      left: 70%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-30px); }
+    }
+
+    /* Glass card */
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px 35px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 26px;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 12px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    textarea {
+      height: 100px;
+      resize: none;
+    }
+
+    label {
+      position: absolute;
+      top: 13px;
+      left: 15px;
+      color: #666;
+      pointer-events: none;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+
+    input:focus + label,
+    input:not(:placeholder-shown) + label,
+    textarea:focus + label,
+    textarea:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 12px;
+      background: #007bff;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #00c6ff, #007bff);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,123,255,0.4);
+    }
+
+    .footer-note {
+      color: #fff;
+      margin-top: 15px;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 30px 25px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+    }
   </style>
 </head>
 <body>
-<h1>🗓️ Daily Report Upload</h1>
-<form id="dailyReportForm">
-  <input type="text" id="driverName" placeholder="Driver Name" required>
-  <input type="text" id="busNumber" placeholder="Bus Number" required>
-  <textarea id="report" placeholder="Report Details" required></textarea>
-  <button type="submit">Submit Report</button>
-</form>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-  const firebaseConfig = {
-    apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
-    authDomain: "drivesafe-connect.firebaseapp.com",
-    projectId: "drivesafe-connect",
-    storageBucket: "drivesafe-connect.firebasestorage.app",
-    messagingSenderId: "549149372493",
-    appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
-    measurementId: "G-GGFYN26XEH"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const form = document.getElementById('dailyReportForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = {
-      driverName: document.getElementById('driverName').value,
-      busNumber: document.getElementById('busNumber').value,
-      report: document.getElementById('report').value,
-      timestamp: new Date().toISOString()
+  <!-- Floating background orbs -->
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+
+  <div class="container">
+    <h1>🗓️ Daily Report Upload</h1>
+
+    <form id="dailyReportForm">
+      <div class="form-group">
+        <input type="text" id="driverName" placeholder=" " required>
+        <label for="driverName">Driver Name</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="busNumber" placeholder=" " required>
+        <label for="busNumber">Bus Number</label>
+      </div>
+
+      <div class="form-group">
+        <textarea id="report" placeholder=" " required></textarea>
+        <label for="report">Report Details</label>
+      </div>
+
+      <button type="submit">🚀 Submit Report</button>
+    </form>
+
+    <div class="footer-note">TNSTC © 2025 | Powered by DriveSafe Connect</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
+      authDomain: "drivesafe-connect.firebaseapp.com",
+      projectId: "drivesafe-connect",
+      storageBucket: "drivesafe-connect.firebasestorage.app",
+      messagingSenderId: "549149372493",
+      appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+      measurementId: "G-GGFYN26XEH"
     };
-    try {
-      await addDoc(collection(db, "daily_reports"), data);
-      alert("✅ Report submitted successfully!");
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      alert("❌ Failed to submit report.");
-    }
-  });
-</script>
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const form = document.getElementById('dailyReportForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        driverName: document.getElementById('driverName').value,
+        busNumber: document.getElementById('busNumber').value,
+        report: document.getElementById('report').value,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        await addDoc(collection(db, "daily_reports"), data);
+        alert("✅ Report submitted successfully!");
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        alert("❌ Failed to submit report.");
+      }
+    });
+  </script>
 </body>
 </html>
-
