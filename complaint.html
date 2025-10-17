@@ -4,62 +4,243 @@
   <meta charset="UTF-8">
   <title>Complaint Box - TNSTC</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f0f8ff; }
-    h1 { color: #007BFF; }
-    form { max-width: 500px; margin: auto; display: flex; flex-direction: column; gap: 15px; }
-    input, textarea, button { padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
-    button { background: #007BFF; color: white; cursor: pointer; border: none; }
-    button:hover { background: #0056b3; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      position: relative;
+    }
+
+    /* Floating animated orbs for background motion */
+    .orb {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      filter: blur(60px);
+      animation: float 6s infinite ease-in-out alternate;
+    }
+    .orb:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+    .orb:nth-child(2) { bottom: 20%; right: 20%; animation-delay: 1s; }
+    .orb:nth-child(3) { top: 60%; left: 70%; animation-delay: 2s; }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-30px); }
+    }
+
+    /* Glass container */
+    .container {
+      width: 90%;
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      padding: 40px 35px;
+      color: white;
+      text-align: center;
+      z-index: 1;
+      animation: slideUp 1s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    h1 span {
+      font-size: 1.5rem;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .form-group {
+      position: relative;
+      text-align: left;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 12px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      color: #333;
+      outline: none;
+      transition: 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      transform: scale(1.02);
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+
+    label {
+      position: absolute;
+      top: 14px;
+      left: 15px;
+      color: #555;
+      font-size: 14px;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+
+    input:focus + label,
+    input:not(:placeholder-shown) + label,
+    textarea:focus + label,
+    textarea:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 10px;
+      background: #007bff;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #00c6ff, #007bff);
+      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+    }
+
+    .footer-note {
+      margin-top: 15px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 30px 25px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+    }
   </style>
 </head>
+
 <body>
+  <!-- Background animation -->
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
 
-<h1>📋 Complaint Box</h1>
+  <!-- Complaint Form -->
+  <div class="container">
+    <h1><span>📋</span> Complaint Box</h1>
 
-<form id="complaintForm">
-  <input type="text" id="driverName" placeholder="Driver Name" required>
-  <input type="text" id="busNumber" placeholder="Bus Number" required>
-  <textarea id="complaint" placeholder="Complaint Details" required></textarea>
-  <button type="submit">Submit Complaint</button>
-</form>
+    <form id="complaintForm">
+      <div class="form-group">
+        <input type="text" id="driverName" placeholder=" " required>
+        <label for="driverName">Driver Name</label>
+      </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+      <div class="form-group">
+        <input type="text" id="busNumber" placeholder=" " required>
+        <label for="busNumber">Bus Number</label>
+      </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
-    authDomain: "drivesafe-connect.firebaseapp.com",
-    projectId: "drivesafe-connect",
-    storageBucket: "drivesafe-connect.firebasestorage.app",
-    messagingSenderId: "549149372493",
-    appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
-    measurementId: "G-GGFYN26XEH"
-  };
+      <div class="form-group">
+        <textarea id="complaint" placeholder=" " required></textarea>
+        <label for="complaint">Complaint Details</label>
+      </div>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+      <button type="submit">🚀 Submit Complaint</button>
+    </form>
 
-  const form = document.getElementById('complaintForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = {
-      driverName: document.getElementById('driverName').value,
-      busNumber: document.getElementById('busNumber').value,
-      complaint: document.getElementById('complaint').value,
-      timestamp: new Date().toISOString()
+    <div class="footer-note">TNSTC © 2025 | DriveSafe Connect</div>
+  </div>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
+      authDomain: "drivesafe-connect.firebaseapp.com",
+      projectId: "drivesafe-connect",
+      storageBucket: "drivesafe-connect.firebasestorage.app",
+      messagingSenderId: "549149372493",
+      appId: "1:549149372493:web:40572fbf76de8b3f1b6c04",
+      measurementId: "G-GGFYN26XEH"
     };
-    try {
-      await addDoc(collection(db, "complaints"), data);
-      alert("✅ Complaint submitted successfully!");
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      alert("❌ Failed to submit complaint.");
-    }
-  });
-</script>
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const form = document.getElementById('complaintForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        driverName: document.getElementById('driverName').value,
+        busNumber: document.getElementById('busNumber').value,
+        complaint: document.getElementById('complaint').value,
+        timestamp: new Date().toISOString()
+      };
+      try {
+        await addDoc(collection(db, "complaints"), data);
+        alert("✅ Complaint submitted successfully!");
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        alert("❌ Failed to submit complaint.");
+      }
+    });
+  </script>
 </body>
 </html>
-
