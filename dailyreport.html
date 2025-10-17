@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Daily Report Upload - TNSTC</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚍 Report Bus Issue - TNSTC</title>
+
   <style>
+    /* ===== Base Styling ===== */
     * {
       margin: 0;
       padding: 0;
@@ -12,193 +15,164 @@
     }
 
     body {
-      height: 100vh;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      position: relative;
+      animation: gradientShift 8s ease-in-out infinite alternate;
     }
 
-    /* Floating background orbs */
-    .orb {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      filter: blur(60px);
-      animation: float 6s infinite ease-in-out alternate;
+    @keyframes gradientShift {
+      0% { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+      100% { background: linear-gradient(135deg, #00b09b, #96c93d); }
     }
 
-    .orb:nth-child(1) {
-      top: 10%;
-      left: 20%;
-      animation-delay: 0s;
-    }
-
-    .orb:nth-child(2) {
-      bottom: 15%;
-      right: 25%;
-      animation-delay: 1s;
-    }
-
-    .orb:nth-child(3) {
-      top: 50%;
-      left: 70%;
-      animation-delay: 2s;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-30px); }
-    }
-
-    /* Glass card */
-    .container {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(15px);
+    .form-container {
+      width: 95%;
+      max-width: 450px;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      padding: 30px;
       border-radius: 20px;
-      padding: 40px 35px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-      text-align: center;
-      animation: fadeIn 1s ease-in;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .form-container:hover {
+      transform: scale(1.02);
     }
 
     h1 {
-      color: #fff;
+      text-align: center;
+      color: #007bff;
       font-size: 26px;
+      margin-bottom: 10px;
+      animation: fadeInDown 1s ease;
+    }
+
+    h2 {
+      text-align: center;
+      color: #444;
+      font-weight: 500;
       margin-bottom: 25px;
-      letter-spacing: 1px;
+      animation: fadeInDown 1.2s ease;
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-group {
-      position: relative;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 14px 12px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.9);
-      font-size: 15px;
-      transition: all 0.3s;
-      outline: none;
-    }
-
-    textarea {
-      height: 100px;
-      resize: none;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     label {
-      position: absolute;
-      top: 13px;
-      left: 15px;
-      color: #666;
-      pointer-events: none;
-      transition: 0.3s;
-      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+      display: block;
     }
 
-    input:focus + label,
-    input:not(:placeholder-shown) + label,
-    textarea:focus + label,
-    textarea:not(:placeholder-shown) + label {
-      top: -10px;
-      left: 12px;
-      background: #007bff;
-      color: white;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-size: 12px;
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+      outline: none;
+    }
+
+    textarea { resize: none; }
 
     button {
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
+      background: linear-gradient(135deg, #28a745, #218838);
       color: white;
-      font-weight: 600;
       font-size: 16px;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: 0.4s ease;
-      box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
     }
 
     button:hover {
-      background: linear-gradient(135deg, #00c6ff, #007bff);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,123,255,0.4);
+      background: linear-gradient(135deg, #218838, #1e7e34);
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .footer-note {
-      color: #fff;
-      margin-top: 15px;
-      font-size: 13px;
-      opacity: 0.8;
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 10;
     }
 
-    @media (max-width: 500px) {
-      .container {
-        padding: 30px 25px;
-      }
-      h1 {
-        font-size: 22px;
-      }
+    .popup.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h3 { color: #28a745; margin-bottom: 10px; }
+    .popup p { color: #444; font-size: 15px; }
+
+    @media (max-width: 600px){
+      .form-container { padding: 25px 20px; }
+      h1{ font-size: 22px; }
+      h2{ font-size: 16px; }
     }
   </style>
 </head>
+
 <body>
-  <!-- Floating background orbs -->
-  <div class="orb"></div>
-  <div class="orb"></div>
-  <div class="orb"></div>
+  <div class="form-container">
+    <h1>🛠️ Report Bus Issue</h1>
+    <h2>பஸ் கோளாறு புகார்</h2>
 
-  <div class="container">
-    <h1>🗓️ Daily Report Upload</h1>
+    <form id="busIssueForm">
+      <label for="busNumber">Bus Number / பஸ் எண்:</label>
+      <input type="text" id="busNumber" name="busNumber" placeholder="Ex: TN-57 N-1234" required>
 
-    <form id="dailyReportForm">
-      <div class="form-group">
-        <input type="text" id="driverName" placeholder=" " required>
-        <label for="driverName">Driver Name</label>
-      </div>
+      <label for="issueType">Issue Type / கோளாறு வகை:</label>
+      <select id="issueType" name="issueType" required>
+        <option value="">-- Select --</option>
+        <option value="engine">Engine / இயந்திரம்</option>
+        <option value="ac">AC / குளிர்சாதன</option>
+        <option value="brake">Brakes / பிரேக்</option>
+        <option value="lights">Lights / விளக்குகள்</option>
+        <option value="others">Others / மற்றவை</option>
+      </select>
 
-      <div class="form-group">
-        <input type="text" id="busNumber" placeholder=" " required>
-        <label for="busNumber">Bus Number</label>
-      </div>
+      <label for="description">Describe the problem / விளக்கம்:</label>
+      <textarea id="description" name="description" rows="4" placeholder="Explain the issue clearly..." required></textarea>
 
-      <div class="form-group">
-        <textarea id="report" placeholder=" " required></textarea>
-        <label for="report">Report Details</label>
-      </div>
-
-      <button type="submit">🚀 Submit Report</button>
+      <button type="submit">📤 Submit Report / புகாரை சமர்ப்பிக்கவும்</button>
     </form>
-
-    <div class="footer-note">TNSTC © 2025 | Powered by DriveSafe Connect</div>
   </div>
 
+  <div id="popup" class="popup">
+    <h3>✅ Report Submitted!</h3>
+    <p>Your bus issue has been successfully recorded.</p>
+  </div>
+
+  <!-- ===== Firebase Backend Integration ===== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD2Z9p3qb8Cj22ew0AzaRvfxm8i-J9XBO4",
@@ -212,24 +186,32 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const form = document.getElementById('dailyReportForm');
+
+    const form = document.getElementById('busIssueForm');
+    const popup = document.getElementById('popup');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const data = {
-        driverName: document.getElementById('driverName').value,
         busNumber: document.getElementById('busNumber').value,
-        report: document.getElementById('report').value,
-        timestamp: new Date().toISOString()
+        issueType: document.getElementById('issueType').value,
+        description: document.getElementById('description').value,
+        timestamp: serverTimestamp()
       };
 
       try {
-        await addDoc(collection(db, "daily_reports"), data);
-        alert("✅ Report submitted successfully!");
-        form.reset();
+        await addDoc(collection(db, "bus_issues"), data);
+
+        // Show success popup
+        popup.classList.add('active');
+        setTimeout(() => {
+          popup.classList.remove('active');
+          form.reset();
+        }, 2500);
       } catch (err) {
         console.error(err);
-        alert("❌ Failed to submit report.");
+        alert("❌ Failed to submit report. Please try again.");
       }
     });
   </script>
