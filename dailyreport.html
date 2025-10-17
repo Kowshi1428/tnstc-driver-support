@@ -7,134 +7,61 @@
 
   <style>
     /* ===== Base Styling ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
     body {
-      min-height: 100vh;
+      min-height:100vh;
       background: linear-gradient(135deg, #00c6ff, #0072ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display:flex; justify-content:center; align-items:center;
       animation: gradientShift 8s ease-in-out infinite alternate;
     }
-
     @keyframes gradientShift {
       0% { background: linear-gradient(135deg, #00c6ff, #0072ff); }
       100% { background: linear-gradient(135deg, #00b09b, #96c93d); }
     }
 
+    /* ===== Card Container ===== */
     .form-container {
-      width: 95%;
-      max-width: 450px;
-      background: #ffffffcc;
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      width:95%; max-width:450px;
+      background:#ffffffcc; backdrop-filter: blur(10px);
+      padding:30px; border-radius:20px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.15);
       transition: transform 0.3s ease;
     }
+    .form-container:hover { transform: scale(1.02); }
 
-    .form-container:hover {
-      transform: scale(1.02);
-    }
+    h1 { text-align:center; color:#007bff; font-size:26px; margin-bottom:10px; animation: fadeInDown 1s ease; }
+    h2 { text-align:center; color:#444; font-weight:500; margin-bottom:25px; animation: fadeInDown 1.2s ease; }
+    @keyframes fadeInDown { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
 
-    h1 {
-      text-align: center;
-      color: #007bff;
-      font-size: 26px;
-      margin-bottom: 10px;
-      animation: fadeInDown 1s ease;
-    }
-
-    h2 {
-      text-align: center;
-      color: #444;
-      font-weight: 500;
-      margin-bottom: 25px;
-      animation: fadeInDown 1.2s ease;
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    label {
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 5px;
-      display: block;
-    }
-
+    /* ===== Input Fields ===== */
+    label { font-weight:600; color:#333; margin-bottom:5px; display:block; }
     input, select, textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 15px;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      width:100%; padding:12px 14px; border:2px solid #e0e0e0; border-radius:10px;
+      font-size:15px; transition:border-color 0.3s, box-shadow 0.3s;
     }
+    input:focus, select:focus, textarea:focus { border-color:#007bff; box-shadow:0 0 8px rgba(0,123,255,0.3); outline:none; }
+    textarea { resize:none; }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-      outline: none;
-    }
-
-    textarea { resize: none; }
-
+    /* ===== Submit Button ===== */
     button {
       background: linear-gradient(135deg, #28a745, #218838);
-      color: white;
-      font-size: 16px;
-      border: none;
-      padding: 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      width: 100%;
+      color:white; font-size:16px; border:none; padding:12px;
+      border-radius:12px; cursor:pointer; font-weight:600; transition: all 0.3s ease; width:100%;
     }
+    button:hover { background: linear-gradient(135deg, #218838, #1e7e34); transform: scale(1.03); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
 
-    button:hover {
-      background: linear-gradient(135deg, #218838, #1e7e34);
-      transform: scale(1.03);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
+    /* ===== Success Popup ===== */
     .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      background: white;
-      padding: 30px 40px;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 10;
+      position: fixed; top:50%; left:50%; transform: translate(-50%, -50%) scale(0.9);
+      background:white; padding:30px 40px; border-radius:20px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.2); text-align:center; opacity:0;
+      transition: all 0.3s ease; z-index:10;
     }
+    .popup.active { opacity:1; transform: translate(-50%, -50%) scale(1); }
+    .popup h3 { color:#28a745; margin-bottom:10px; }
+    .popup p { color:#444; font-size:15px; }
 
-    .popup.active {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .popup h3 { color: #28a745; margin-bottom: 10px; }
-    .popup p { color: #444; font-size: 15px; }
-
-    @media (max-width: 600px){
-      .form-container { padding: 25px 20px; }
-      h1{ font-size: 22px; }
-      h2{ font-size: 16px; }
-    }
+    @media (max-width:600px) { .form-container{padding:25px 20px;} h1{font-size:22px;} h2{font-size:16px;} }
   </style>
 </head>
 
@@ -169,7 +96,7 @@
     <p>Your bus issue has been successfully recorded.</p>
   </div>
 
-  <!-- ===== Firebase Backend Integration ===== -->
+  <!-- ===== Firebase SDK ===== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
@@ -202,16 +129,14 @@
 
       try {
         await addDoc(collection(db, "bus_issues"), data);
-
-        // Show success popup
         popup.classList.add('active');
         setTimeout(() => {
           popup.classList.remove('active');
           form.reset();
         }, 2500);
-      } catch (err) {
-        console.error(err);
-        alert("❌ Failed to submit report. Please try again.");
+      } catch (error) {
+        console.error("Error:", error);
+        alert("❌ Submission failed. Check console for details.");
       }
     });
   </script>
